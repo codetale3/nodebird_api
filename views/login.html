@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>API 로그인</title>
+    <style>
+        div{
+            margin: 10px;
+            width: 280px;
+        }
+        .input-group input{
+            float: right;
+        }
+        fieldset{
+            width: 500px;
+        }
+        table, tr, th, td{
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 3px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+{% if user and user.id %}
+<p>안녕하세요! {{user.nick}}님
+<button type="button">로그아웃</button> </p>
+<fieldset>
+<legend>도메인 등록</legend>
+<form action="/domain" method="post">
+<div>
+<label for="radio-free">무료</label>
+<input type="radio" id="radio-free" name="type" value="free" />
+<label for="radio-premium">프리미엄</label>
+<input type="radio" id="radio-premium" name="type" value="premium">
+</div>
+<div>
+<label for="input-domain">도메인</label>
+<input type="text" id="input-domain" name="host" placeholder="ex) zerocho.com"/>
+</div>
+<button type="submit">저장</button>
+</form>
+</fieldset>
+<table id="domain-list">
+<tr>
+<th>도메인주소</th>
+<th>타입</th>
+<th>클라이언트 비밀키</th>
+</tr>
+{% for domain in domains %}
+<tr>
+<td>{{domain.host}}</td>
+<td>{{domain.type}}</td>
+<td>{{domain.clientSecret}}</td>
+</tr>
+{% endfor %}
+</table>
+
+{% else %}
+
+<h1>NodeBird 계정으로 로그인하세요.</h1>
+<form id="login" action="/auth/login" method="post">
+<div class="input-group">
+<label for="email">이메일</label>
+<input type="email" id="email" name="email" />
+</div>
+<div class="input-group">
+<label for="password">비밀번호</label>
+<input type="password" id="password" name="password"/>
+</div>
+<p>회원가입은 localhost:8081에서 하세요.</p>
+<button type="submit">로그인</button>
+</form>
+
+{% endif %}
+</body>
+</html>
